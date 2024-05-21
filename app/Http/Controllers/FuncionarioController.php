@@ -10,6 +10,7 @@ class FuncionarioController extends Controller
 {
     public function index()
     {
+        Funcionario::notify('é isso aí', [1,2,3]);
         return response()->json(['ret' => 1, 'data' => Funcionario::all()]);
     }
 

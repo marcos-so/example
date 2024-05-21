@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Services\NotificationService;
+use App\sqs\SnsDispatchNotification;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 class Funcionario extends Model
 {
@@ -31,9 +34,25 @@ class Funcionario extends Model
 
     public static function funcionarioDepartamento($funcionarioId)
     {
-        // dd($funcionarioId);
         return self::whereId($funcionarioId)
             ->with('departamento')
             ->first();
+    }
+
+    public static function notify($message)
+    {
+        $uuid = Uuid::uuid4()->toString();
+
+        $reference = [
+            'type' => 'Tec. info.',
+            'id' => $uuid
+        ];
+        $userIds = [10,20,30,40,50];
+
+        $data = NotificationService::builder($message)
+            ->user($userIds)
+            ->reference($reference)
+            ->build();
+        SnsDispatchNotification::notify($data);
     }
 }
