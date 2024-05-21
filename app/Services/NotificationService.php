@@ -35,7 +35,7 @@ class NotificationService
         return $this;
     }
 
-    public function reference(array $reference): NotificationService
+    public function reference(mixed $reference): NotificationService
     {
         $this->reference = $reference;
         return $this;
