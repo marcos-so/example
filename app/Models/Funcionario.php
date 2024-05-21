@@ -39,17 +39,18 @@ class Funcionario extends Model
             ->first();
     }
 
-    public static function notify($message)
+    public static function notify($message, $funcionarioId)
     {
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = Uuid::uuid4();
 
         $reference = [
             'type' => 'Tec. info.',
-            'id' => $uuid
+            'id' => $uuid->toString()
         ];
-        $userIds = [10,20,30,40,50];
+        $userIds = [$funcionarioId];
 
         $data = NotificationService::builder($message)
+            ->origin(env('APP_NAME'))
             ->user($userIds)
             ->reference($reference)
             ->build();
